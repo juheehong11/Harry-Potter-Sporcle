@@ -1,5 +1,9 @@
 Harry Potter Sporcle Quiz
 =================
+Live Site: https://harry-potter-sporcle-quiz.glitch.me
+
+Code: https://glitch.com/edit/#!/harry-potter-sporcle-quiz
+
 
 This is an interactive quiz based on the idea of "Sporcle" games, which are timed trivia quizzes. 
 This specific one is for guessing the names of characters in the Harry Potter franchise. 
