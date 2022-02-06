@@ -1,0 +1,506 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Quiz Me!</title>
+    <!--   inspired by Sporcle   -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- import the webpage's stylesheet -->
+    <link rel="stylesheet" href="/style.css">
+    
+    <style>
+				
+      body,html{
+        height: 100%;
+        margin: 0;
+      }
+      
+      html {
+        background-image: url("https://cdn.glitch.com/f3ee55fe-4f2c-4272-a9c8-2a90095785f0%2F14%2B%20Wallpaper%20Macbook%20Desktop%20Harry%20Potter.jpeg?v=1590304606125");
+        min-height:100%;
+        background-size:cover;
+      }
+      
+      body{
+        min-height:100%;
+      }
+      
+      table {
+        border-spacing: 0.5rem;
+      }
+      
+      td {
+        padding: 0.5rem;
+      }
+      
+      h1{
+        color: white;
+      }
+      
+      p{
+        color:white;
+      }
+      
+      div{
+      }
+      #hptable{
+        border-spacing: 0.5rem;
+        table-layout: fixed;
+        width: 95%;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      td{
+        padding: 0.5rem;
+      }
+      th.hidden{
+        visibility: hidden;
+        background-color: rgba(255, 255, 255, 0.62)
+      }
+      th {
+        background-color: rgba(255, 255, 255, 0.62)
+      }
+      
+      #finish
+      {
+        margin-top: 50px;
+        margin-bottom: 25px;
+      }
+      button {
+        border-radius: 15px;
+      }
+      .alert 
+      {
+        font-family: "HarryPotter7"; 
+        padding: 20px;
+        background-color: rgba(255, 255, 255, 0.52);
+        /*           #bff5eb; */
+        color: purple;
+      }
+
+      .closebtn 
+      {
+        margin-left: 15px;
+        color: black;
+        font-weight: bold;
+        float: right;
+        font-size: 22px;
+        line-height: 20px;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+
+      .closebtn:hover 
+      {
+        color: red;
+      }
+    </style>
+    
+    
+    <script type="text/javascript">
+      var timelimit = 60; 
+      var myTimer;
+      var score = 0;
+      
+      function reset()
+      {
+        location.replace("index.html")
+      }
+      function decreaseSeconds()
+      {
+        if(timelimit >0)
+          timelimit--;
+        document.getElementById("timeShower").innerHTML="time: " + formatTimeLeft(timelimit)
+        if(timelimit == 0)
+        {
+          localStorage.setItem("finalscore", score);
+          location.replace("timeup.html")
+        }
+      }
+      
+      function startTimer()
+      {
+          myTimer = setInterval(decreaseSeconds, 1000);          
+      }
+      
+      function formatTimeLeft(time)
+      {
+        const minutes = Math.floor(time / 60);
+        let seconds = time % 60;
+        if(seconds < 10)
+        {
+          seconds = `0${seconds}`;
+        }
+        return `${minutes}:${seconds}`;
+      }
+      
+      function stopTimer()
+      {
+        clearInterval(myTimer);
+      }
+      
+      var hpcharacters = [
+        "harry potter",
+        "ron weasley",
+        "hermione granger",
+        "ginny weasley",
+        "luna lovegood",
+        "neville longbottom",
+        "lord voldemort",
+        "bellatrix lestrange",
+        "draco malfoy",
+        "minerva mcgonagall",
+        "albus dumbledore",
+        "severus snape",
+        "rubeus hagrid",
+        "dobby",
+        "sirius black",
+        "remus lupin",
+        "fred weasley",
+        "george weasley",
+        "lily potter",
+        "james potter",
+        "peter pettigrew",
+        "cedric diggory",
+        "seamus finnigan",
+        "dean thomas",
+        "alastor moody",
+        "dolores umbridge"
+      ]
+      
+      function finished()
+      {
+        localStorage.setItem("finalscore", score);
+        location.replace("gamesover.html")
+      }
+      
+      function check()
+      {
+        var nameinput = document.getElementById("hpname").value.toLowerCase();
+        var bool = hpcharacters.includes(nameinput); 
+        if(bool)
+        {
+          console.log("character exists in the list!")
+          //show the character name
+          //increment score by 1
+
+          var inx = hpcharacters.indexOf(nameinput);
+          document.getElementById(inx).style.visibility='visible';
+          if(score< 32)
+          {
+            score++
+            console.log(score)
+          }
+          document.getElementById("scoreboard").innerHTML="Score: " + score + "/26"
+        }
+        else
+        {
+          alert("This name doesn't seem to exist within the Wizarding World!")
+        }
+        console.log("button clicked!")
+      }
+      
+      function easylevel()
+      {
+        timelimit = 300
+        var text = "Time: 5:00"
+        document.getElementById("timeShower").innerHTML = text
+      }
+      
+      function mediumlevel()
+      {
+        timelimit = 180
+        var text = "Time: 3:00"
+        document.getElementById("timeShower").innerHTML = text
+      }
+      
+      function hardlevel()
+      {
+        timelimit = 60
+        var text = "Time: 1:00"
+        document.getElementById("timeShower").innerHTML = text
+      }
+      
+      document.addEventListener("keyup", function(event)
+      {
+        if (event.keyCode === 13)
+        {
+          event.preventDefault();
+          document.getElementById("checkbutton").click();
+        }
+      })
+  </script>
+  </head>  
+  
+  
+  <body>
+    <div class="alert">
+      <span class="closebtn" onclick="this.parentElement.style.display='none';" style="font-size:85%">close x</span>
+      <strong style="font-size: 150%">How to Play:</strong> 
+      <br>
+      <br> ✥ Choose a time limit option: 1 minute, 3 minutes, or 5 minutes. The timer will be set accordingly. The default is set to hard level.
+      <br> ✥ Start and pause the timer as you want, or reset the entire game with the reset button. 
+      <br> ✥ Type the full name and then hit enter or click on the "CHECK" button.
+      <br> ✥ The system is case insensitive, but the spelling must be right! 
+      <br> ✥ If the answer is right, it'll pop up where it should. If your answer is wrong, you'll get a pop-up notification, but you can resume the game after clicking "OK".
+      <br> ✥ If time is up, the page will automatically reload to the scores page, or, you can click on "Finish Game" button towards the bottom if you finish early.
+      <br> ✥ Note that some "initials" may stand for prefixes and some characters don't necessarily have a last name.
+      <br> ✥ Enjoy!
+      
+    </div>
+    
+    <center>
+      <div>
+        <p style="font-family: 'HarryPotter7'; font-size:150%; color: black">
+          Select a level to play:
+        </p>
+        <table class = timebuttons>
+          <td>
+            <button onclick="easylevel()" style="color:black; font-family:'HarryPotter7';font-size:150%">easy<br/>5:00</button>
+          </td>
+          <td>
+            <button onclick="mediumlevel()" style="color:black; font-family:'HarryPotter7';font-size:150%">medium<br/>3:00</button>
+          </td>
+          <td>
+            <button onclick="hardlevel()" style="color:black; font-family:'HarryPotter7';font-size:150%">hard<br/>1:00</button>
+          </td>
+        </table>
+      </div>  
+      
+      <div id="box">
+        <h1 style="font-family:'HarryPotter7';font-size:500%;color:black; background-color: rgba(255, 255, 255, 0.52)">
+          Harry Potter <br> Sporcle Quiz!
+        </h1>
+        <p style="font-family:'HarryPotter7';font-size:160%; color: black; background-color: rgba(255, 255, 255, 0.52)">
+          Match Harry Potter characters with their initials! 
+        </p>
+      </div>
+      <p id="result"></p>
+      <div id="scoreboard" style="font-family:'HarryPotter7'; background-color: rgba(255, 255, 255, 0.52); font-size:200%">
+      Score: 0/26
+      </div>
+    </center>
+    
+    <div class="bg"></div> 
+
+    <table id="hptable" style="color:black; font-family:'HarryPotter7'; font-size:120%">
+      <tr>
+        <th style="font-size:120%; background-color: rgba(255, 255, 255, 0.52); height: 50px" colspan="2">
+          Character Name:     
+          <input type="text" id="hpname" placeholder=" First name, Last name" onfocus="this.value=''" style="color:black; font-family:'HarryPotter7'; font-size:90%">
+          <button id="checkbutton" onclick="check();document.getElementById('hpname').value = ''" style="color:black; font-family:'HarryPotter7'; font-size:65%">
+            Check
+          </button>                
+        </th>
+
+        <th id="timeShower" style="background-color: rgba(255, 255, 255, 0.52); font-size:120%">
+          Time: 1:00
+        </th>
+        <th style="background-color: rgba(255, 255, 255, 0.52)">
+          <button onclick="startTimer()" style="color:black; font-family:'HarryPotter7';font-size:120%">
+            Start
+          </button>
+          <button onclick="stopTimer()" style="color:black; font-family:'HarryPotter7';font-size:120%">
+            Pause
+          </button>   
+          <button onclick="reset()" style="color:black; font-family:'HarryPotter7';font-size:120%">
+            Reset
+          </button>
+        </th>
+      </tr>
+      <tr style="height: 45px; font-size:105%">
+        <th>
+          H.P.
+        </th>
+        <th class="hidden" id="0">
+          Harry Potter
+        </th>
+        <th>
+          R.W.
+        </th>
+        <th class="hidden" id="1">
+          Ronald Weasley
+        </th>
+      </tr>
+      <tr style="height: 45px; font-size:105%">
+        <th>
+          H.G.
+        </th>
+        <th class="hidden" id="2">
+          Hermione Granger
+        </th>
+        <th>
+          G.W.
+        </th>
+        <th class="hidden" id="3">
+          Ginny Weasley
+        </th>
+      </tr>
+      <tr style="height: 45px; font-size:105%">
+        <th>
+          L.L.
+        </th>
+        <th class="hidden" id="4">
+          Luna Lovegood
+        </th>
+        <th>
+          N.L.
+        </th>
+        <th class="hidden" id="5">
+          Neville Longbottom
+        </th>
+      </tr>
+      <tr style="height: 45px; font-size:105%">
+        <th>
+          L.V.
+        </th>
+        <th class="hidden" id="6">
+          Lord Voldemort
+        </th>
+        <th>
+          B.L.
+        </th>
+        <th class="hidden" id="7">
+          Bellatrix Lestrange
+        </th>
+      </tr>
+      <tr style="height: 45px; font-size:105%">
+        <th>
+          D.M.
+        </th>
+        <th class="hidden" id="8">
+          Draco Malfoy
+        </th>
+        <th>
+          M.M.
+        </th>
+        <th class="hidden" id="9">
+          Minerva McGonagall
+        </th>
+      </tr>
+      <tr style="height: 45px; font-size:105%">
+        <th>
+          A.D.
+        </th>
+        <th class="hidden" id="10">
+          Albus Dumbledore
+        </th>
+        <th>
+          S.S.
+        </th>
+        <th class="hidden" id="11">
+          Severus Snape
+        </th>
+      </tr>
+      <tr style="height: 45px; font-size:105%">
+        <th>
+          R.H.
+        </th>
+        <th class="hidden" id="12">
+          Rubeus Hagrid
+        </th>
+        <th>
+          D.
+        </th>
+        <th class="hidden" id="13">
+          Dobby
+        </th>
+      </tr>
+      <tr style="height: 45px; font-size:105%">
+        <th>
+          S.B.
+        </th>
+        <th class="hidden" id="14">
+          Sirius Black
+        </th>
+        <th>
+          R.L.
+        </th>
+        <th class="hidden" id="15">
+          Remus Lupin
+        </th>
+      </tr>
+      <tr style="height: 45px; font-size:105%">
+        <th>
+          F.W.
+        </th>
+        <th class="hidden" id="16">
+          Fred Weasley
+        </th>
+        <th>
+          G.W.
+        </th>
+        <th class="hidden" id="17">
+          George Weasley
+        </th>
+      </tr>
+      <tr style="height: 45px; font-size:105%">
+        <th>
+          L.P.
+        </th>
+        <th class="hidden" id="18">
+          Lily Potter
+        </th>
+        <th>
+          J.P.
+        </th>
+        <th class="hidden" id="19">
+          James Potter
+        </th>
+      </tr>
+      <tr style="height: 45px; font-size:105%">
+        <th>
+          P.P.
+        </th>
+        <th class="hidden" id="20">
+          Peter Pettigrew
+        </th>
+        <th>
+          C.D.
+        </th>
+        <th class = "hidden" id="21">
+          Cedric Diggory
+        </th>
+      </tr>
+      <tr style="height: 45px; font-size:105%">
+        <th>
+          S.F.
+        </th>
+        <th class="hidden" id = "22">
+          Seamus Finnigan
+        </th>
+        <th>
+          D.T.
+        </th>
+        <th class="hidden" id = "23">
+          Dean Thomas
+        </th>
+      </tr>
+      <tr style="height: 45px; font-size:105%">
+        <th>
+          A.M.
+        </th>
+        <th class="hidden" id="24">
+          Alastor Moody
+        </th>
+        <th>
+          D.U.
+        </th>
+        <th class="hidden" id="25">
+          Dolores Umbridge
+        </th>
+      </tr>
+    </table>
+
+    <center>
+      <button id="finish" style="color:black; font-family:'HarryPotter7';font-size:200%" onclick="finished()">
+        Finish Game
+      </button>
+    </center>
+
+  </body>
+</html>
+

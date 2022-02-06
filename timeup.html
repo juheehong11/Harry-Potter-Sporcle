@@ -1,0 +1,76 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Time's Up!</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- import the webpage's stylesheet -->
+    <link rel="stylesheet" href="/style.css">
+    
+    <style>
+      html {
+        background-image: url("https://cdn.glitch.com/f3ee55fe-4f2c-4272-a9c8-2a90095785f0%2F8a522f51807ba20a615cbd02c85eb6b5.jpg?v=1590254907311");
+        min-height:100%;
+        background-size:cover;
+      }
+      body{
+        margin-top: auto;
+        color: yellow
+      }
+      #tryagain
+      {
+        border-radius: 15px;
+      }
+    </style>
+    
+    <script type="text/javascript">
+      var finalscore = localStorage.getItem("finalscore");
+      
+      window.onload = function showFinalScore(){
+        
+        document.getElementById("scorepar").innerHTML="Your final score is: " + finalscore + "/26"
+        console.log("showFinalScore() run")
+        console.log("checkWin() run")
+        if(finalscore==26)
+          document.getElementById("message").innerHTML="Congratulations!! You won the game!"
+        else if(finalscore >=20)
+          document.getElementById("message").innerHTML="That was so close! Try again?"
+        else if(finalscore >= 12)
+          document.getElementById("message").innerHTML="You're nearly there! Try again?"
+        else if(finalscore >=0)
+          document.getElementById("message").innerHTML="Keep it up! Try again?"        
+      }
+      
+      function tryagain(){
+        location.replace("index.html")
+      }
+    </script>
+  </head>  
+  
+  <body style="font-family:'Harry P'">
+    <center>
+    
+      <p style="font-size:700%">
+        Time's Up! 
+      </p>
+    
+      <p id="scorepar" onload="showFinalScore();" style="font-size:400%">
+        Final Score
+      </p>
+      
+      <p id="message" style="font-size:250%; font-family:'HarryPotter7'">
+        Game Status
+      </p>
+      
+      <button id="tryagain" onclick="tryagain()" style="font-size:300%; font-family:'HarryPotter7'">
+        Try Again
+      </button>
+    <!-- include the Glitch button to show what the webpage is about and
+          to make it easier for folks to view source and remix -->
+<!--     <div class="glitchButton" style="position:fixed;top:20px;right:20px;"></div> -->
+<!--     <script src="https://button.glitch.me/button.js"></script> -->
+  </body>
+</html>
